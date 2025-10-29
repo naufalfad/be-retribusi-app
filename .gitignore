@@ -1,0 +1,30 @@
+# === Node.js & environment files ===
+node_modules/
+.env
+
+# === Logs ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# === OS generated files ===
+.DS_Store
+Thumbs.db
+
+# === Build output ===
+dist/
+build/
+coverage/
+
+# === IDE or editor settings ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Temporary files ===
+tmp/
+.cache/
