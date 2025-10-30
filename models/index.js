@@ -39,5 +39,7 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.pembayaran = require("./pembayaran")(sequelize, Sequelize.DataTypes);
+db.target_pendapatan = require("./targetpendapatan")(sequelize, Sequelize.DataTypes);
 
 module.exports = db;
