@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       //wajibRetribusi.hasMany(models.tagihanRetribusi, {foreignKey: id_retribusi});
-      //wajibRetribusi.belongsTo(models.Users, { foreignKey: 'id_user' });
+      wajibRetribusi.belongsTo(models.Users, { foreignKey: 'id_admin', targetKey: 'id_user', as: 'admin' });
       wajibRetribusi.belongsTo(models.jenisRetribusi, { foreignKey: 'id_jenis' });
+      wajibRetribusi.belongsTo(models.kategoriRetribusi, { foreignKey: 'id_kategori' });
       //wajibRetribusi.belongsTo(models.Users, {foreignKey: nik});
     }
   }
@@ -30,7 +31,27 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    id_kategori: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     nama_wr: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    provinsi_wr: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    kabupaten_wr: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    kecamatan_wr: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    kelurahan_wr: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -56,7 +77,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     password_wr: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    total_tarif_wr: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
     },
     otp_wr: {
       type: DataTypes.STRING,

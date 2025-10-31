@@ -22,11 +22,34 @@ module.exports = {
         references: {
           model: 'jenis_retribusi',
           key: 'id_jenis'
+        }
+      },
+      id_kategori: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'kategori_retribusi',
+          key: 'id_kategori'
         },
         onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       },
       nama_wr: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      provinsi_wr: {
+        type: Sequelize.STRING,
+        defaultValue: 'Jawa Barat'
+      },
+      kabupaten_wr: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      kecamatan_wr: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      kelurahan_wr: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -53,6 +76,10 @@ module.exports = {
       },
       password_wr: {
         type: Sequelize.STRING,
+        allowNull: false
+      },
+      total_tarif_wr: {
+        type: Sequelize.DECIMAL,
         allowNull: false
       },
       otp_wr: {

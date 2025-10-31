@@ -9,17 +9,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_kategori: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'kategori_retribusi',
-          key: 'id_kategori'
-        },
-        onDelete: "RESTRICT",
-        onUpdate: "CASCADE",
+      nama_jenis: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      jenis_wr: {
-        type: Sequelize.STRING
+      tarif_jenis: {
+        type: Sequelize.DECIMAL
       },
       createdAt: {
         allowNull: false,
