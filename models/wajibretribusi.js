@@ -10,16 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      //wajibRetribusi.hasMany(models.tagihanRetribusi, {foreignKey: id_retribusi});
-      wajibRetribusi.belongsTo(models.Users, { foreignKey: 'id_admin', targetKey: 'id_user', as: 'admin' });
+      wajibRetribusi.belongsTo(models.Users, { foreignKey: 'id_admin', targetKey: 'id_user', as: 'user' });
       wajibRetribusi.belongsTo(models.jenisRetribusi, { foreignKey: 'id_jenis' });
       wajibRetribusi.belongsTo(models.kategoriRetribusi, { foreignKey: 'id_kategori' });
-      //wajibRetribusi.belongsTo(models.Users, {foreignKey: nik});
     }
   }
   wajibRetribusi.init({
     id_retribusi: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },

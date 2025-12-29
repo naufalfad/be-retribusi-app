@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       jenisRetribusi.hasMany(models.wajibRetribusi, { foreignKey: 'id_jenis' });
-      jenisRetribusi.hasMany(models.kategoriRetribusi, { foreignKey: 'id_jenis' });
     }
   }
   jenisRetribusi.init({
@@ -18,10 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    // id_kategori: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    // },
     nama_jenis: {
       type: DataTypes.STRING,
       allowNull: false

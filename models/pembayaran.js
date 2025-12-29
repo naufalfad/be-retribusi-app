@@ -1,22 +1,52 @@
-"use strict";
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
-    "pembayaran",
-    {
-      id_pembayaran: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      id_tagihan: DataTypes.INTEGER,
-      id_billing: DataTypes.STRING,
-      nominal: DataTypes.DECIMAL(14, 2),
-      tanggal_pembayaran: DataTypes.DATE,
-      metode_pembayaran: DataTypes.STRING,
-      status_pembayaran: DataTypes.STRING,
-      channel: DataTypes.STRING,
-      id_setoran: DataTypes.INTEGER,
+  class pembayaran extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      pembayaran.belongsTo(models.skrd, { foreignKey: 'id_skrd' });
+      pembayaran.belongsTo(models.wajibRetribusi, { foreignKey: 'id_retribusi' });
+    }
+  }
+  pembayaran.init({
+    id_pembayaran: {
+      type: DataTypes.STRING,
+      primaryKey: true
     },
-    { tableName: "pembayaran", underscored: true }
-  );
+    id_skrd: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    id_retribusi: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    tanggal_bayar: {
+      type: DataTypes.DATE,
+    },
+    jumlah_bayar: {
+      type: DataTypes.DECIMAL,
+    },
+    metode_bayar: {
+      type: DataTypes.STRING,
+    },
+    status_pembayaran: {
+      type: DataTypes.ENUM('pending', 'lunas', 'gagal'),
+      defaultValue: 'pending'
+    },
+    keterangan: {
+      type: DataTypes.TEXT
+    },
+  }, {
+    sequelize,
+    modelName: 'pembayaran',
+    tableName: 'pembayaran'
+  });
+  return pembayaran;
 };

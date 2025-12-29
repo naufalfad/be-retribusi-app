@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>SKRD Kabupaten Bogor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .kop {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            text-align: center;
+            border: 1px solid #ccc;
+            line-height: 80px;
+            font-weight: bold;
+        }
+
+        .kop-info {
+            text-align: center;
+            flex: 1;
+        }
+
+        .kop-kanan {
+            width: 200px;
+            border-left: 1px solid #000;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .section {
+            border: 1px solid #000;
+            border-top: none;
+            padding: 10px;
+        }
+
+        .amount {
+            background: #f3f3f3;
+            border: 1px solid #000;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .table-detail {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .table-detail th,
+        .table-detail td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .table-detail th {
+            background: #eaeaea;
+            text-align: center;
+        }
+
+        .perhatian {
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .ttd {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .stamp {
+            border: 1px dashed #000;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            font-size: 9px;
+            margin-left: auto;
+            line-height: 100px;
+        }
+
+        .qr img {
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="kop">
+        <div class="logo">
+            {{#if logo_image}}
+            <img src="{{logo_image}}" alt="Logo Kabupaten Bogor" style="width:80px; height:80px;" />
+            {{else}}
+            <span>Logo</span>
+            {{/if}}
+        </div>
+        <div class="kop-info">
+            <h2>PEMERINTAH KABUPATEN BOGOR</h2>
+            <h3>DINAS LINGKUNGAN HIDUP</h3>
+            <p>Jl. Raya Tegar Beriman No. 1, Cibinong - Bogor</p>
+        </div>
+        <div class="kop-kanan">
+            <p><b>SKRKP</b><br>Surat Ketetapan Retribusi<br>Pelayanan Persampahan / Kebersihan</p>
+
+            {{#if midtrans_qris}}
+            <p>ID Transaksi: <b>{{midtrans_qris.id_pembayaran}}</b></p>
+            <div class="qr-main"><img src="{{midtrans_qris.qr_image_base64}}" alt="QRIS Code" /></div>
+            <p style="font-size:9px;">Scan QRIS untuk Bayar</p>
+            {{else if midtrans_virtual_accounts.0}}
+            <p>ID Transaksi: <b>{{midtrans_virtual_accounts.0.id_pembayaran}}</b></p>
+            <p>VA {{midtrans_virtual_accounts.0.bank}}: <b>{{midtrans_virtual_accounts.0.va_number}}</b></p>
+            <p style="font-size:9px;">Bayar via Virtual Account</p>
+            {{else}}
+            <p>ID Transaksi: <b>N/A</b></p>
+            <p>Info Pembayaran akan terbit saat pembayaran terdaftar</p>
+            {{/if}}
+
+        </div>
+    </div>
+
+    <div class="section">
+        <p><b>Nama:</b> {{nama_wr}}</p>
+        <p><b>Alamat:</b> {{alamat_wr}}</p>
+        <p><b>NPWPD / NIK:</b> {{nik_wr}}</p>
+        <p><b>Objek Retribusi:</b> {{jenis}} - {{kategori}}</p>
+        <p><b>Tanggal Terbit:</b> {{tgl_terbit}}</p>
+        <p><b>Tanggal Jatuh Tempo:</b> {{tgl_jatuh_tempo}}</p>
+        <p><b>Periode Pembayaran:</b> {{periode}}</p>
+        <p><b>Masa Bebas Retribusi:</b> {{masa_berlaku}}</p>
+
+        <table class="table-detail">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Uraian</th>
+                    <th>Tarif Retribusi</th>
+                    <th>Denda</th>
+                    <th>Total Tagihan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">1</td>
+                    <td>Retribusi Sampah Periode {{periode}}</td>
+                    <td style="text-align:right;">Rp {{total_retribusi}}</td>
+                    <td style="text-align:right;">{{total_denda}}</td>
+                    <td style="text-align:right;"><b>Rp {{total_tagihan}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="amount">
+            Total yang harus dibayar: <span style="float:right;">Rp {{total_tagihan}}</span>
+        </div>
+
+        <div class="payment-info">
+            <h4>PILIHAN METODE PEMBAYARAN</h4>
+            <p style="font-size: 11px; text-align: center; margin-bottom: 10px;">Lakukan pembayaran sejumlah <strong>Rp
+                    {{total_tagihan}}</strong> sebelum <strong>{{tgl_jatuh_tempo}}</strong> melalui:</p>
+
+            {{#if midtrans_qris}}
+            <div class="payment-option">
+                <h5>1. QRIS (GoPay, OVO, Dana, LinkAja, ShopeePay, dll.)</h5>
+                <div class="payment-qr">
+                    <img src="{{midtrans_qris.qr_image_base64}}" alt="QRIS Code">
+                </div>
+                <p style="text-align: center;">Scan QR Code di atas menggunakan aplikasi e-wallet Anda.</p>
+                <p style="text-align: center;">Kadaluwarsa: {{midtrans_qris.expiry}}</p>
+            </div>
+            <hr style="border: none; border-top: 1px dashed #eee; margin: 15px 0;">
+            {{/if}}
+
+            {{#if midtrans_virtual_accounts.length}}
+            <div class="payment-option">
+                <h5>2. Virtual Account</h5>
+                {{#each midtrans_virtual_accounts}}
+                <p><strong>Bank {{this.bank}}:</strong> {{this.va_number}}</p>
+                <p>Kadaluwarsa: {{this.expiry}}</p>
+                {{/each}}
+                <p style="font-size: 11px; margin-top: 5px;">* Ikuti instruksi pembayaran bank terkait.</p>
+            </div>
+            {{/if}}
+
+            {{#unless midtrans_qris}}
+            {{#unless midtrans_virtual_accounts.length}}
+            <p style="text-align: center; font-style: italic;">Informasi pembayaran belum tersedia. Silakan hubungi
+                petugas.</p>
+            {{/unless}}
+            {{/unless}}
+        </div>
+
+        <div class="perhatian">
+            <b>PERHATIAN:</b>
+            <ol>
+                <li>Pembayaran dilakukan sebelum tanggal jatuh tempo untuk menghindari denda keterlambatan.</li>
+                <li>Denda dikenakan sebesar Rp200 per hari setelah tanggal 8 setiap bulan.</li>
+                <li>Masa bebas retribusi berlaku sesuai periode pembayaran di atas.</li>
+            </ol>
+        </div>
+
+        <div class="ttd">
+            <p>Bogor, {{tgl_jatuh_tempo}}<br>Mengetahui,<br><b>Kepala Dinas Lingkungan Hidup Kabupaten Bogor</b></p>
+            <div class="stamp">Cap DLH<br>Kabupaten Bogor</div><br><br><br>
+            <p><b>(Nama Pejabat Dummy)</b><br>NIP. 19790101 200801 1 007</p>
+        </div>
+    </div>
+</body>
+
+</html>

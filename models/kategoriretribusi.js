@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      kategoriRetribusi.belongsTo(models.jenisRetribusi, { foreignKey: 'id_jenis' });
+      kategoriRetribusi.hasMany(models.wajibRetribusi, { foreignKey: 'id_kategori' });
     }
   }
   kategoriRetribusi.init({
@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
-    },
-    id_jenis: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
     },
     nama_kategori: {
       type: DataTypes.STRING,
@@ -29,14 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
-    parameter_resiko: {
-      type: DataTypes.ENUM('RENDAH', 'SEDANG', 'TINGGI', 'KHUSUS'),
-      defaultValue: 'RENDAH'
-    },
-    parameter_volume: {
-      type: DataTypes.ENUM('1-5Kg', '5-10Kg', 'lebih dari 10Kg'),
-      defaultValue: '1-5Kg'
-    }
   }, {
     sequelize,
     modelName: 'kategoriRetribusi',

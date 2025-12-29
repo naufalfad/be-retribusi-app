@@ -36,24 +36,20 @@ exports.getKategoriByJenis = async (req, res) => {
             });
         }
 
-        const jenis = await jenisRetribusi.findByPk(id_jenis, {
-            include: [
-                {
-                    model: kategoriRetribusi,
-                    attributes: ['id_kategori', 'nama_kategori', 'tarif_kategori', 'parameter_resiko', 'parameter_volume'],
-                },
-            ],
+        const kategori = await kategoriRetribusi.findAll({
+            where: { id_jenis },
+            attributes: ['id_kategori', 'nama_kategori', 'tarif_kategori', 'parameter_resiko', 'parameter_volume']
         });
 
-        if (!jenis) {
+        if (!kategori || kategori.length === 0) {
             return res.status(400).json({
-                message: 'Jenis tidak ditemukan'
+                message: 'Kategori tidak ditemukan untuk jenis tersebut'
             });
         }
 
         res.status(200).json({
             message: 'Kategori berhasil di ambil',
-            data: jenis
+            data: kategori
         });
     } catch (error) {
         console.error(error);

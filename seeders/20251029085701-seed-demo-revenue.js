@@ -39,10 +39,10 @@ module.exports = {
         updated_at: new Date(),
       });
     }
-    await q.bulkInsert("pembayaran", rows);
+    //await q.bulkInsert("pembayaran", rows);
   },
   async down(q) {
-    await q.bulkDelete("pembayaran", null, {});
+    //await q.bulkDelete("pembayaran", null, {});
     await q.bulkDelete("target_pendapatan", null, {});
   },
 };

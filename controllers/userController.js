@@ -3,6 +3,7 @@ const { Users, wajibRetribusi } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const twilio = require('twilio');
+const { Op } = require('sequelize');
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -102,21 +103,39 @@ exports.loginAdmin = async (req, res) => {
 
 exports.loginWr = async (req, res) => {
     try {
-        const { nik_wr, password_wr } = req.body;
+        const { nikOrNib, password_wr } = req.body;
 
-        const wr = await wajibRetribusi.findOne({ where: { nik_wr } });
+        if (!nikOrNib || !password_wr) {
+            return res.status(400).json({
+                message: 'NIK/NIB dan password wajib diisi',
+            });
+        }
+
+        const wr = await wajibRetribusi.findOne({
+            where: {
+                [Op.or]: [{ nik_wr: nikOrNib }, { nib_wr: nikOrNib }]
+            },
+        });
+
         if (!wr) return res.status(404).json({ message: 'User tidak ditemukan' });
 
         const isPasswordValid = await bcrypt.compare(password_wr, wr.password_wr);
         if (!isPasswordValid) return res.status(401).json({ message: 'Password salah' });
 
         const token = jwt.sign(
-            { id_retribusi: wr.id_retribusi, nik_wr: wr.nik_wr },
+            { id_retribusi: wr.id_retribusi, nik_wr: wr.nik_wr, nib_wr: wr.nib_wr },
             SECRET_KEY,
             { expiresIn: '1d' }
         );
 
-        res.json({ message: 'Login berhasil', token });
+        res.json({
+            message: 'Login berhasil',
+            token,
+            data: {
+                nama_wr: wr.nama_wr,
+                status_wr: wr.status_wr
+            },
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Terjadi kesalahan server', error: error.message });

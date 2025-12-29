@@ -1,6 +1,7 @@
 # === Node.js & environment files ===
 node_modules/
 .env
+config.json
 
 # === Logs ===
 npm-debug.log*
